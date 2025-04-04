@@ -138,10 +138,6 @@ export default {
         }
       })
 
-      if (params.toString()) {
-        res += `?${params.toString()}`
-      }
-
       try {
         const response = await axios.get(res)
         this.operadoras = response.data.map((op) => ({
