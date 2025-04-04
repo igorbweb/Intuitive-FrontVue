@@ -127,8 +127,9 @@ export default {
       this.error = ''
       this.operadoras = []
 
-      const res = await axios.get('https://seuapp.onrender.com/operadoras', {
-        params: { q: this.query }
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const res = await axios.get(`${apiUrl}/operadoras`, {
+          params: { q: this.query },
       });
 
       Object.keys(this.search).forEach((key) => {
