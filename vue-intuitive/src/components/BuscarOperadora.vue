@@ -127,8 +127,9 @@ export default {
       this.error = ''
       this.operadoras = []
 
-      let url = 'http://127.0.0.1:8000/buscar'
-      let params = new URLSearchParams()
+      const res = await axios.get('https://seuapp.onrender.com/operadoras', {
+        params: { q: this.query }
+      });
 
       Object.keys(this.search).forEach((key) => {
         if (this.search[key]) {
@@ -137,11 +138,11 @@ export default {
       })
 
       if (params.toString()) {
-        url += `?${params.toString()}`
+        res += `?${params.toString()}`
       }
 
       try {
-        const response = await axios.get(url)
+        const response = await axios.get(res)
         this.operadoras = response.data.map((op) => ({
           razao: op.Razao_Social,
           registro_ans: op.Registro_ANS,
