@@ -128,7 +128,7 @@ export default {
       this.operadoras = []
 
       const apiUrl = import.meta.env.VITE_API_URL;
-      let url = `${apiUrl}/buscar`
+      let url = `${apiUrl}buscar`
       let params = new URLSearchParams()
 
       console.log("API URL:", import.meta.env.VITE_API_URL);
