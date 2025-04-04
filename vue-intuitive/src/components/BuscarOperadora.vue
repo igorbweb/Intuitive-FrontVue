@@ -128,9 +128,11 @@ export default {
       this.operadoras = []
 
       const apiUrl = import.meta.env.VITE_API_URL;
-      const res = await axios.get(`${apiUrl}/operadoras`, {
+      const res = await axios.get(`${apiUrl}/buscar`, {
           params: { q: this.query },
       });
+
+      console.log("API URL:", import.meta.env.VITE_API_URL);
 
       Object.keys(this.search).forEach((key) => {
         if (this.search[key]) {
