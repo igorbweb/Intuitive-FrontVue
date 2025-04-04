@@ -89,7 +89,9 @@
     </button>
     <div v-if="loading" class="mt-4">Carregando...</div>
     <div v-if="error" class="mt-4 text-red-500">{{ error }}</div>
-    <div class="resultado-count text-center mt-4 text-green-500">{{ operadoras.length }} Operadoras encontradas</div>
+    <div v-if="busca && operadoras.length" class="resultado-count text-center mt-4 text-green-500">
+      {{ operadoras.length }} Operadoras encontradas
+    </div>
     <div v-if="operadoras.length" class="grid-response">
       <div class="card" v-for="(operadora, index) in operadoras" :key="index">
         <p><strong>Registro ANS:</strong> {{ operadora.registro_ans }}</p>
@@ -119,6 +121,7 @@ export default {
       operadoras: [],
       loading: false,
       error: '',
+      busca: false
     }
   },
   methods: {
@@ -143,6 +146,8 @@ export default {
         url += `?${params.toString()}`
       }
 
+      this.busca = false;
+
       try {
         const response = await axios.get(url)
         this.operadoras = response.data.map((op) => ({
@@ -153,8 +158,10 @@ export default {
           uf: op.UF,
           modalidade: op.Modalidade,
         }))
+        this.busca = true;
       } catch (err) {
         this.error = 'Erro ao buscar operadoras. Verifique os filtros e tente novamente.'
+        this.busca = false;
       } finally {
         this.loading = false
       }
