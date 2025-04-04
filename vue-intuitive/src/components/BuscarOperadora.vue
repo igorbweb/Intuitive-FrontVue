@@ -128,9 +128,8 @@ export default {
       this.operadoras = []
 
       const apiUrl = import.meta.env.VITE_API_URL;
-      const res = await axios.get(`${apiUrl}/buscar`, {
-          params: { q: this.query },
-      });
+      let url = `${apiUrl}/buscar`
+      let params = new URLSearchParams()
 
       console.log("API URL:", import.meta.env.VITE_API_URL);
 
@@ -140,8 +139,12 @@ export default {
         }
       })
 
+      if (params.toString()) {
+        url += `?${params.toString()}`
+      }
+
       try {
-        const response = await axios.get(res)
+        const response = await axios.get(url)
         this.operadoras = response.data.map((op) => ({
           razao: op.Razao_Social,
           registro_ans: op.Registro_ANS,
