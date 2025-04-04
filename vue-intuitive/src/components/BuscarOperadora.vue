@@ -89,7 +89,7 @@
     </button>
     <div v-if="loading" class="mt-4">Carregando...</div>
     <div v-if="error" class="mt-4 text-red-500">{{ error }}</div>
-    <div v-if="busca && operadoras.length" class="resultado-count text-center mt-4 text-green-500">
+    <div v-if="busca && operadoras.length > 0" class="resultado-count text-center mt-4 text-green-500">
       {{ operadoras.length }} Operadoras encontradas
     </div>
     <div v-if="operadoras.length" class="grid-response">
@@ -126,9 +126,10 @@ export default {
   },
   methods: {
     async buscarOperadoras() {
-      this.loading = true
-      this.error = ''
-      this.operadoras = []
+      this.loading = true;
+      this.error = '';
+      this.operadoras = [];
+      this.busca = false;
 
       const apiUrl = import.meta.env.VITE_API_URL;
       let url = `${apiUrl}buscar`
@@ -146,8 +147,6 @@ export default {
         url += `?${params.toString()}`
       }
 
-      this.busca = false;
-
       try {
         const response = await axios.get(url)
         this.operadoras = response.data.map((op) => ({
@@ -158,10 +157,10 @@ export default {
           uf: op.UF,
           modalidade: op.Modalidade,
         }))
+
         this.busca = true;
       } catch (err) {
         this.error = 'Erro ao buscar operadoras. Verifique os filtros e tente novamente.'
-        this.busca = false;
       } finally {
         this.loading = false
       }
